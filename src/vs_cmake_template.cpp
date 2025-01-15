@@ -2,11 +2,12 @@
 //
 
 #include "vs_cmake_template.h"
+#include "vs_cmake_template_lib.h"
 
 using namespace std;
 
 int main()
 {
-	cout << "Hello CMake." << endl;
+	cout << "1+2=" << Add(1,2) << endl;
 	return 0;
 }

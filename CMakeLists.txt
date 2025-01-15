@@ -1,21 +1,84 @@
-﻿# CMakeList.txt : CMake project for vs_cmake_template, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.8)
 
-# Enable Hot Reload for MSVC compilers if supported.
-if (POLICY CMP0141)
-  cmake_policy(SET CMP0141 NEW)
-  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
+enable_language(C)
+enable_language(CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
+
+set(GTest_DIR "/vcpkg/build/x64-windows/share/gtest/")
+enable_testing()
+#add_custom_target(check)
+
+if (CMAKE_CXX_COMPILER_ID MATCHES GNU)
+    add_compile_options(-W)
+    add_compile_options(-Wall)
+    add_compile_options(-Werror)
+    add_compile_options(-Wpointer-arith)
+    add_compile_options(-Wformat-security)
+    add_compile_options(-Woverloaded-virtual)
+    add_compile_options(-Wwrite-strings)
+    add_compile_options(-fvisibility=hidden)
+    add_compile_options(-Wunused-parameter -Wunused-function -Wunused-variable -Wunused-value -Wmissing-declarations)
+    add_compile_options(-Wmissing-field-initializers)
+    add_compile_options(-Wcast-qual)
+    add_compile_options(-ggdb)
+
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_compile_options(-O0)
+        add_compile_options(-g3)
+        add_compile_options(-fsanitize=address)
+        add_link_options(-fsanitize=address)
+        add_compile_options(-fsanitize=undefined)
+        add_link_options(-fsanitize=undefined)
+    endif()
+    if (CMAKE_BUILD_TYPE STREQUAL "Relase")
+        add_compile_options(-O3)
+        add_compile_options(-g3)
+    endif()
+    if (COVERAGE)
+        if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+            message(FATAL_ERROR "Coverage requires -DCMAKE_BUILD_TYPE=Debug Current value=${CMAKE_BUILD_TYPE}")
+        endif ()
+
+        message(STATUS "Setting coverage compiler flags")
+
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -ggdb3 -O0 --coverage -fprofile-arcs -ftest-coverage")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}     -g -ggdb3 -O0 --coverage -fprofile-arcs -ftest-coverage")
+
+        add_definitions(-DCOVERAGE_TEST)
+    endif (COVERAGE)
+endif ()
+
+if( WIN32 )
+    # Enable Hot Reload for MSVC compilers if supported.
+    if (POLICY CMP0141)
+      cmake_policy(SET CMP0141 NEW)
+      set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
+    endif()
+    add_compile_options(/W3)
+    add_compile_options(/Zi)
+    if (CMAKE_BUILD_TYPE STREQUAL "Relase")
+        add_compile_options(/Ot)
+    endif()
 endif()
 
-project ("vs_cmake_template")
+set(TARGET vs_cmake_template)
+project (${TARGET})
+
+add_subdirectory(lib)
 
 # Add source to this project's executable.
-add_executable (vs_cmake_template "vs_cmake_template.cpp" "vs_cmake_template.h")
+add_executable (${TARGET} 
+	src/vs_cmake_template.cpp 
+	src/vs_cmake_template.h)
+
+target_link_libraries(${TARGET}
+        vs_cmake_template_lib
+        )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET vs_cmake_template PROPERTY CXX_STANDARD 20)
+  set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 20)
 endif()
 
 # TODO: Add tests and install targets if needed.

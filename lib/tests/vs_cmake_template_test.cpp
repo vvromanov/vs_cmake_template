@@ -9,4 +9,3 @@ TEST(Test, Add21)
 {
     EXPECT_EQ(3, Add(2, 1));
 }
-3

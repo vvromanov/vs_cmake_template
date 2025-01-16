@@ -18,8 +18,6 @@ target_link_libraries(
     vs_cmake_template_lib
 )
 
-add_test(AllTestsInMain ${TARGET})
-
 target_compile_features(${TARGET} PRIVATE cxx_std_20)
 
 gtest_discover_tests(

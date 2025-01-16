@@ -1,6 +1,7 @@
 # vs_cmake_template
 Template for simple test projects
-* Visual Studio
+* Microsoft Visual Studio
+* JetBrains CLion
 * CMake
 * Google test
 * WSL

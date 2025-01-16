@@ -1,10 +1,12 @@
 ﻿cmake_minimum_required (VERSION 3.8)
 
-enable_language(C)
-enable_language(CXX)
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
+
+set(TARGET vs_cmake_template)
+project (${TARGET})
+enable_language(C)
+enable_language(CXX)
 
 enable_testing()
 #add_custom_target(check)
@@ -61,9 +63,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES MSVC)
         add_compile_options(/Ot)
     endif()
 endif()
-
-set(TARGET vs_cmake_template)
-project (${TARGET})
 
 add_subdirectory(lib)
 

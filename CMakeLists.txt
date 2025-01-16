@@ -75,8 +75,4 @@ target_link_libraries(${TARGET}
         vs_cmake_template_lib
         )
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 20)
-endif()
-
 # TODO: Add tests and install targets if needed.

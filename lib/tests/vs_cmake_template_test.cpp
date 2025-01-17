@@ -5,7 +5,6 @@ TEST(Test, Add12) {
     EXPECT_EQ(3, Add(1, 2));
 }
 
-TEST(Test, Add21)
-{
+TEST(Test, Add21) {
     EXPECT_EQ(3, Add(2, 1));
 }

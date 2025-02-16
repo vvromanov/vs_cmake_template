@@ -1,10 +1,10 @@
-﻿cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required(VERSION 3.8)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 set(TARGET vs_cmake_template)
-project (${TARGET})
+project(${TARGET})
 enable_language(C)
 enable_language(CXX)
 
@@ -32,11 +32,11 @@ if (CMAKE_CXX_COMPILER_ID MATCHES GNU)
         add_link_options(-fsanitize=address)
         add_compile_options(-fsanitize=undefined)
         add_link_options(-fsanitize=undefined)
-    endif()
+    endif ()
     if (CMAKE_BUILD_TYPE STREQUAL "Release")
         add_compile_options(-O3)
         add_compile_options(-g3)
-    endif()
+    endif ()
     if (COVERAGE)
         if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
             message(FATAL_ERROR "Coverage requires -DCMAKE_BUILD_TYPE=Debug Current value=${CMAKE_BUILD_TYPE}")
@@ -55,21 +55,21 @@ if (CMAKE_CXX_COMPILER_ID MATCHES MSVC)
     add_compile_options(/W3)
     if (CMAKE_BUILD_TYPE STREQUAL "Release")
         add_compile_options(/Ot)
-    else()
+    else ()
         # Enable Hot Reload for MSVC compilers if supported.
         add_compile_options(/Zi)
-    endif()
-endif()
+    endif ()
+endif ()
 
 add_subdirectory(lib)
 
 # Add source to this project's executable.
-add_executable (${TARGET} 
-	src/vs_cmake_template.cpp 
-	)
+add_executable(${TARGET}
+    src/vs_cmake_template.cpp
+)
 
 target_link_libraries(${TARGET}
-        vs_cmake_template_lib
-        )
+    vs_cmake_template_lib
+)
 
 # TODO: Add tests and install targets if needed.

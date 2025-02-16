@@ -10,11 +10,11 @@ add_executable(${TARGET}
 )
 
 target_link_libraries(
-    ${TARGET} PRIVATE 
+    ${TARGET} PRIVATE
     GTest::gtest
     GTest::gtest_main
-#    GTest::gmock
-#    GTest::gmock_main
+    #    GTest::gmock
+    #    GTest::gmock_main
     vs_cmake_template_lib
 )
 
